@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>lodop简易教学</title>
+    <script language="javascript" src="LodopFuncs.js"></script>
+</head>
+<body>
+
+
+<div id="div01" >
+    <style>
+        h1 {
+            text-align: center;
+        }
+        #div01 {
+            width: 100%;
+            border: 1px solid red;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        .price {
+            color: red;
+
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+        }
+        table,td,th {border: 1px solid black;border-collapse: collapse}
+        table,td {
+            text-align: center;
+        }
+        .remarks {
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .f_left {
+            float: left;
+        }
+        .f_right {
+            float: right;
+        }
+        .bottom {
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+    <h1>lodop打印演示</h1>
+
+    <div class="f_left">左边</div>
+    <div class="f_right">右边</div>
+    <table>
+        <thead>
+            <tr>
+                <th>品名</th>
+                <th>价格($)</th>
+                <th>数量(个)</th>
+                <th>总价($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>苹果</td>
+                <td>10</td>
+                <td>1</td>
+                <td class="price"></td>
+            </tr>
+            <tr>
+                <td>香蕉</td>
+                <td>10</td>
+                <td>2</td>
+                <td class="price"></td>
+            </tr>
+            <tr>
+                <td>橘子</td>
+                <td>10</td>
+                <td>3</td>
+                <td class="price"></td>
+            </tr>
+            <tr>
+                <td>柠檬</td>
+                <td>10</td>
+                <td>4</td>
+                <td class="price"></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="remarks">打印说明:引入lodopFuncs.js用来检测本地的打印服务</div>
+    <div class="bottom">底边</div>
+</div>
+
+
+<button onclick="getPrintNameList()">获取打印机列表</button>
+<p>指定序号(或名称)为<input type="text" id="T5" size="15" value="0">的打印机来<input type="button" value="打印预览" onclick="PreviewByPrinterName(document.getElementById('T5').value)"></p>
+<p>打印份数为<input type="text" id="T6" size="2" value="2" name="copies"><input type="button" value="开始打印" onclick="PrintMoreCopies(document.getElementById('T6').value)"></p>
+<footer>
+    <button id="print_btn">打印预览</button>
+    <button onclick="print1()">打印</button>
+    <button onclick="printSet1()">打印设置</button>
+</footer>
+
+
+<script language="javascript" type="text/javascript">
+    var LODOP; //声明为全局变量
+    var price_tds = document.getElementsByClassName('price');
+    for(var i=0;i<price_tds.length;i++) {
+        var _price = (i+1)*10;
+        price_tds[i].innerHTML=_price;
+    }
+
+    var btn = document.getElementById('print_btn');
+
+    btn.onclick=function () {
+        prn_preview1();
+    };
+
+    function print1() {
+        CreateOnePage();
+        LODOP.PRINT();
+    }
+
+    function printSet1() {
+        CreateOnePage();
+        LODOP.PRINT_SETUP();
+    }
+
+
+
+    function prn_preview1() {
+        CreateOnePage();
+        LODOP.SET_PREVIEW_WINDOW(1,0,0,0,0,"");
+        LODOP.PREVIEW();
+//        LODOP.PREVIEW();
+//        LODOP.PRINT();
+//        LODOP.PRINT_SETUP();
+    };
+    function CreateOnePage(){
+        LODOP=getLodop();
+        LODOP.PRINT_INIT("打印控件功能演示_Lodop功能_整页缩放打印输出");
+        LODOP.ADD_PRINT_HTM(0,0,"100%","100%",document.getElementById('div01').innerHTML);
+        LODOP.SET_PREVIEW_WINDOW(0,0,0,0,0,"");
+    };
+
+    // 获取打印机列表
+    function getPrintNameList() {
+
+        var printerCount = LODOP.GET_PRINTER_COUNT();
+
+        // 只是在为了测试在双向绑定时可不可以赋值之后打印。
+        for (var i = 0; i < printerCount; i++) {
+            console.log(LODOP.GET_PRINTER_NAME(i))
+        }
+
+    }
+    // 指定打印机
+    function PreviewByPrinterName(strPrinterName) {
+        CreateOnePage();
+        if (LODOP.SET_PRINTER_INDEXA(strPrinterName))
+            LODOP.PREVIEW();
+    };
+
+    // 设置打印机的打印张数
+    function PrintMoreCopies(intCopies) {
+        CreateOnePage();
+        if (LODOP.SET_PRINT_COPIES(intCopies)) LODOP.PRINT();
+        else  alert("设置打印份数失败！");
+    };
+</script>
+</body>
+</html>

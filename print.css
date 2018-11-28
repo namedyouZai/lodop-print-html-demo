@@ -1,0 +1,40 @@
+h1 {
+    text-align: center;
+}
+#div01 {
+    width: 100%;
+    border: 1px solid red;
+    padding-bottom: 20px;
+    position: relative;
+}
+.price {
+    color: red;
+
+}
+table {
+    width: 80%;
+    margin: 20px auto;
+}
+table,td,th {border: 1px solid black;border-collapse: collapse}
+table,td {
+    text-align: center;
+}
+.remarks {
+    text-align: center;
+}
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+.f_left {
+    float: left;
+}
+.f_right {
+    float: right;
+}
+.bottom {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
